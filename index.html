@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Real Estate Website</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>My Real Estate Website</h1>
+    <nav>
+      <a href="index.html">Home</a> |
+      <a href="about.html">About</a> |
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Featured Properties</h2>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search by name...">
+      <button onclick="searchProperties()">Search</button>
+      <button onclick="resetSearch()">Reset</button>
+    </div>
+
+    <div class="properties" id="properties-container"></div>
+  </main>
+
+  <footer>
+    <p>© 2025 My Real Estate Website</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
