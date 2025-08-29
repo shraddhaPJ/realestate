@@ -1,37 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Real Estate Website</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Real Estate Project</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDhQu4Cm9_6s4-T0AIsPS92ilwXbJHdPpA",
+  authDomain: "realestate-57b87.firebaseapp.com",
+  projectId: "realestate-57b87",
+  storageBucket: "realestate-57b87.firebasestorage.app",
+  messagingSenderId: "718597394625",
+  appId: "1:718597394625:web:2778de3948868afd790440",
+  measurementId: "G-1CYRSG3VBH"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+document.getElementById('enquiry-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+    const phone = e.target.phone.value;
+    const message = e.target.message.value;
+
+    try {
+        await addDoc(collection(db, "enquiries"), {
+            name,
+            email,
+            phone,
+            message,
+            timestamp: new Date()
+        });
+        alert("Enquiry submitted successfully!");
+        e.target.reset();
+    } catch (err) {
+        alert("Failed to submit enquiry. Check console for error.");
+        console.error(err);
+    }
+});
+</script>
+
+
 <body>
   <header>
-    <h1>My Real Estate Website</h1>
-    <nav>
-      <a href="index.html">Home</a> |
-      <a href="about.html">About</a> |
-      <a href="contact.html">Contact</a>
-    </nav>
-  </header>
+    <a href="#">
+            <img src="images/condo.jpeg" alt="My Real Estate Logo" class="logo">
+        </a>
 
-  <main>
-    <h2>Featured Properties</h2>
-
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search by name...">
-      <button onclick="searchProperties()">Search</button>
-      <button onclick="resetSearch()">Reset</button>
+      <h1>REAL ESTATE</h1>
+    <div class="container">
+    
+        
+          
+        <nav>
+            <a href="#about">About</a>
+            <a href="#units">Units</a>
+            <a href="#amenities">Amenities</a>
+            <a href="#contact">Contact</a>
+        </nav>
     </div>
+</header>
 
-    <div class="properties" id="properties-container"></div>
-  </main>
+ 
 
-  <footer>
-    <p>© 2025 My Real Estate Website</p>
-  </footer>
+    <!-- Header -->
+   
 
-  <script src="script.js"></script>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Luxury Apartments for Modern Living</h2>
+            <p>Book your dream home today!</p>
+            <a href="#contact" class="btn">Enquire Now</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2>About the Project</h2>
+            <p>This project offers premium 2 & 3 BHK apartments with world-class amenities and connectivity.</p>
+        </div>
+    </section>
+
+    <!-- Units Section -->
+    <section id="units" class="section">
+    <div class="container">
+        <h2>Unit Configurations</h2>
+        <div class="units">
+
+            <!-- 2 BHK -->
+            <div class="unit">
+                <img src="images/2bhk.jpeg" alt="2 BHK" class="unit-img">
+                <h3>2 BHK</h3>
+                <p>Area: 800 sq.ft.</p>
+                <p>Price: ₹64 Lakhs*</p>
+            </div>
+
+            <!-- 3 BHK -->
+            <div class="unit">
+                <img src="images/3bhk.jpg" alt="3 BHK" class="unit-img">
+                <h3>3 BHK</h3>
+                <p>Area: 1050 sq.ft.</p>
+                <p>Price: ₹99 Lakhs*</p>
+            </div>
+
+            <!-- 3 BHK Premium -->
+            <div class="unit">
+                <img src="images/condo.jpeg" alt="3 BHK Premium" class="unit-img">
+                <h3>3 BHK Premium</h3>
+                <p>Area: 1200 sq.ft.</p>
+                <p>Price: ₹1.15 Crores*</p>
+            </div>
+
+            <!-- 4 BHK Duplex -->
+            <div class="unit">
+                <img src="images/2bhk.jpeg" alt="4 BHK Duplex" class="unit-img">
+                <h3>4 BHK Duplex</h3>
+                <p>Area: 1800 sq.ft.</p>
+                <p>Price: ₹1.8 Crores*</p>
+            </div>
+
+            <!-- Studio Apartment -->
+            <div class="unit">
+                <img src="images/3bhk.jpg" alt="Studio Apartment" class="unit-img">
+                <h3>Studio Apartment</h3>
+                <p>Area: 500 sq.ft.</p>
+                <p>Price: ₹45 Lakhs*</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+    <!-- Amenities Section -->
+    <section id="amenities" class="section">
+        <div class="container">
+            <h2>Amenities</h2>
+            <ul>
+                <li>Swimming Pool</li>
+                <li>Gym & Fitness Center</li>
+                <li>Clubhouse</li>
+                <li>Children's Play Area</li>
+                <li>Landscaped Gardens</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <form id="enquiry-form">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <input type="text" name="phone" placeholder="Phone Number" required>
+                <textarea name="message" placeholder="Your Message" required></textarea>
+                <button type="submit">Send Enquiry</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 My Real Estate Project. All Rights Reserved.</p>
+        </div>
+    </footer>
+
 </body>
 </html>

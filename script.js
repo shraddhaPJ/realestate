@@ -1,35 +1,39 @@
-const properties = [
-  { id:1, name:"2 BHK Apartment", price:"₹81 Lakh", area:"591 sq.ft.", image:"images/2bhk.jpeg" },
-  { id:2, name:"3 BHK Apartment", price:"₹1.1 Crore", area:"936 sq.ft.", image:"images/3bhk.jpeg" },
-  { id:3, name:"2 BHK Premium Apartment", price:"₹84.9 Lakh", area:"707 sq.ft.", image:"images/condo.jpeg" }
-];
+import { enquiriesCollection, addDoc, serverTimestamp } from "./firebase-init.js";
 
-function displayProperties(list){
-  const container = document.getElementById("properties-container");
-  container.innerHTML = "";
-  list.forEach(p=>{
-    const card = document.createElement("div");
-    card.classList.add("property-card");
-    card.innerHTML=`
-      <img src="${p.image}" alt="${p.name}">
-      <h3>${p.name}</h3>
-      <p>Price: ${p.price}</p>
-      <p>Area: ${p.area}</p>
-      <a href="property.html?id=${p.id}">View Details</a>
-    `;
-    container.appendChild(card);
+const modal = document.getElementById("enquiryModal");
+const propertyInput = document.getElementById("property");
+const statusMsg = document.getElementById("statusMsg");
+
+document.getElementById("openFormBtn").onclick = () => { propertyInput.value = "General Enquiry"; modal.style.display = "flex"; };
+document.getElementById("openFormBtnHero").onclick = () => { propertyInput.value = "General Enquiry"; modal.style.display = "flex"; };
+
+document.querySelectorAll(".openPropertyEnquiry").forEach(btn => {
+  btn.addEventListener("click", () => {
+    propertyInput.value = btn.dataset.property;
+    modal.style.display = "flex";
   });
-}
+});
 
-displayProperties(properties);
+document.getElementById("closeModal").onclick = () => modal.style.display = "none";
+window.onclick = e => { if(e.target == modal) modal.style.display = "none"; };
 
-function searchProperties(){
-  const input = document.getElementById("searchInput").value.toLowerCase();
-  const filtered = properties.filter(p=>p.name.toLowerCase().includes(input));
-  displayProperties(filtered);
-}
+document.getElementById("enquiryForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const message = document.getElementById("message").value.trim();
+  const property = propertyInput.value;
 
-function resetSearch(){
-  document.getElementById("searchInput").value="";
-  displayProperties(properties);
-}
+  if(!name || !email || !phone) { statusMsg.innerText="⚠️ Fill required fields"; return; }
+
+  try {
+    await addDoc(enquiriesCollection, { name, email, phone, message, property, timestamp: serverTimestamp() });
+    statusMsg.innerText="✅ Enquiry submitted!";
+    document.getElementById("enquiryForm").reset();
+    setTimeout(()=>modal.style.display="none",2000);
+  } catch(err) {
+    console.error(err);
+    statusMsg.innerText="❌ Failed to submit. Check Firebase config and rules.";
+  }
+});
